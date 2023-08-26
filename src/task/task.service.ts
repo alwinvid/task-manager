@@ -1,17 +1,25 @@
 import { Injectable } from '@nestjs/common';
+import { v4 as uuid } from "uuid";
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { Task, TaskStatus } from './entities/task.entity';
 
 @Injectable()
 export class TaskService {
-  private tasks: string[] = []
+  private tasks: Task[] = []
 
-  create(createTaskDto: CreateTaskDto) {
-    return 'This action adds a new task';
+  create(body: CreateTaskDto) {
+    const task: Task = {
+      id: uuid(),
+      title: body.title,
+      description: body.description,
+      status: TaskStatus.OPEN,
+    }
+    this.tasks.push(task)
+    return task
   }
 
   findAll() {
-    // return `This action returns all task`;
     return this.tasks
   }
 
